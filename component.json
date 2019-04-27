@@ -1,0 +1,32 @@
+{
+  "!": "doran package manager v0.0.5",
+  "name": "startingover",
+  "template": "c",
+  "version": "0.0.1",
+  "vala": "0.26",
+  "authors": [],
+  "description": "startingover",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {},
+  "source": "src",
+  "files": [
+    "src/startingover.c"
+  ],
+  "packages": [],
+  "includes": [
+    "./include"
+  ],
+  "libraries": [
+    "m"
+  ],
+  "options": {
+    "VERSION": "0.0.1",
+    "RELEASE_NAME": "startingover"
+  },
+  "definitions": [],
+  "symbols": [],
+  "copy": null,
+  "vapidir": "/src/vapis",
+  "console": false
+}
