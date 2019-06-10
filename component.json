@@ -11,14 +11,22 @@
   "dependencies": {},
   "source": "src",
   "files": [
-    "src/startingover.c"
+    "src/entities.cpp",
+    "src/game.cpp",
+    "src/main.cpp",
+    "src/systems.cpp"
   ],
   "packages": [],
   "includes": [
-    "./include"
+    "./include",
+    "/usr/include"
   ],
   "libraries": [
-    "m"
+    "m",
+    "SDL2",
+    "SDL2_image",
+    "SDL2_mixer",
+    "SDL2_ttf"
   ],
   "options": {
     "VERSION": "0.0.1",

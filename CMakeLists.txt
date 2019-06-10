@@ -27,11 +27,15 @@ endif ()
 #   application source
 #
 
-list ( APPEND C_SOURCES src/startingover.c )
+list ( APPEND C_SOURCES src/entities.cpp )
+list ( APPEND C_SOURCES src/game.cpp )
+list ( APPEND C_SOURCES src/main.cpp )
+list ( APPEND C_SOURCES src/systems.cpp )
 #
 #   application includes
 #
 set ( INCLUDES "${INCLUDES};./include" )
+set ( INCLUDES "${INCLUDES};/usr/include" )
 
 
 #
@@ -39,6 +43,10 @@ set ( INCLUDES "${INCLUDES};./include" )
 #
 # Libs: 
 set ( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lm" )
+set ( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lSDL2" )
+set ( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lSDL2_image" )
+set ( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lSDL2_mixer" )
+set ( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lSDL2_ttf" )
 
 
 set ( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w -std=c99 -O3" )
@@ -52,7 +60,7 @@ include_directories(AFTER ${INCLUDES})
 #
 add_executable ( ${PROJECT_NAME} ${C_SOURCES} ${RESOURCES} )
 
-target_link_libraries ( ${PROJECT_NAME} m  )
+target_link_libraries ( ${PROJECT_NAME} m SDL2 SDL2_image SDL2_mixer SDL2_ttf  )
 install (TARGETS ${PROJECT_NAME} RUNTIME DESTINATION . )
 
 include (CPack)
