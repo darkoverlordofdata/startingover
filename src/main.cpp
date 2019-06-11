@@ -7,6 +7,10 @@
 #include <chrono>
 #include <string>
 #include <map>
+#ifdef __EMSCRIPTEN__
+#include <functional>
+#include <emscripten.h>
+#endif
 #include "components.h"
 #include "game.h"
 /**
@@ -15,7 +19,14 @@ inline void logSDLError(std::ostream &os, const std::string &msg){
 	os << msg << " error: " << SDL_GetError() << std::endl;
 }
 
+#ifdef __EMSCRIPTEN__
+std::function<void()> loop;
+void main_loop() { loop(); }
+#endif
+
 int main(int argc, char** argv){
+
+
 
     using namespace std::chrono;
     std::srand(std::time(0));    
@@ -24,7 +35,7 @@ int main(int argc, char** argv){
     auto width = 720;
     auto height = 600;
 
-    if (SDL_Init(SDL_INIT_EVERYTHING)) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER | SDL_INIT_AUDIO)) {
         logSDLError(std::cout, "Init SDL");
         return 0;
     }
@@ -48,7 +59,13 @@ int main(int argc, char** argv){
     auto mark1 = high_resolution_clock::now();
 
     game->start();
+
+#ifdef __EMSCRIPTEN__
+    loop = [&] 
+    {
+#else
     while (game->isRunning()) {
+#endif
         auto mark2 = high_resolution_clock::now();
         delta = ((double) duration_cast<microseconds>(mark2 - mark1).count()) / 1000000.0;
         mark1 = mark2;
@@ -75,6 +92,10 @@ int main(int argc, char** argv){
         }
         game->draw(fps);
     }
+#ifdef __EMSCRIPTEN__
+    ;
+    emscripten_set_main_loop(main_loop, 0, true);
+#endif
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
 	IMG_Quit();

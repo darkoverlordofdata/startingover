@@ -5,7 +5,9 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/include",
-                "/usr/include"
+                "/usr/include",
+                "/home/darkoverlordofdata/Documents/Projects/emsdk/fastcomp/emscripten/system/include/SDL",
+                "/home/darkoverlordofdata/Documents/Projects/emsdk/fastcomp/emscripten/system/include"
             ],
             "defines": [
                 "_DEBUG",
