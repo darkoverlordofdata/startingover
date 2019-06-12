@@ -1,8 +1,18 @@
 # startingover
 
-Why? Because after reinstalling windows10 and MSys2, my opengl projects no longer cmpile due to an unresolved symbol 'typedef ptrddif_t' in glew.
+Why? Because after reinstalling windows10 and MSys2, my opengl projects no longer cmpile due to an unresolved symbol 'typedef ptrddif_t' in glew. I'm running out of inspriation. Then retire, move, and hard drive fail. 6 months later.
 
 "It'll be just like starting over" -- John Lennon
  
-use cmake to build desktop version
-use ctrl-b to build emscripten version
+    use doran (cmake) to build desktop version
+    use ctrl-b to build emscripten version
+
+goals & vision - put the lime in the coconut
+
+    colocation of data as in better-mousetrap - array of struct
+    entitas style extension to make c++ static typeing more fluid
+    artemis architecture for the engine using typescript
+    mix of opengl & sdl2 similar to monogame
+    run on desktop and emscripten
+
+    

@@ -1,21 +1,4 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_mixer.h>
-#include <SDL2/SDL_ttf.h>
-#include <cstdio>
-#include <map>
-#include <string>
-#include <iostream>
-#include <ctime>
-#include <chrono>
-#include <list>
-#include <algorithm>
-#include <random>
-#include "components.h"
-#include "entities.h"
-#include "systems.h"
 #include "game.h"
-
 
 Game::Game(std::string t, int width, int height, SDL_Window* w, SDL_Renderer* r)
     : title(t), width(width), height(height), window(w), renderer(r), frameSkip(0), running(0) {}
@@ -108,7 +91,6 @@ void Game::update(double delta) {
     for (int i=0; i<entities.size(); i++) systems->collisionSystem(&entities[i]);
     for (int i=0; i<entities.size(); i++) systems->entitySystem(&entities[i]);
     systems->inputSystem(player);
-    // for (int i=0; i<entities.size(); i++) systems->soundSystem(&entities[i]);
     for (int i=0; i<entities.size(); i++) systems->physicsSystem(&entities[i]);
     for (int i=0; i<entities.size(); i++) systems->expireSystem(&entities[i]);
     for (int i=0; i<entities.size(); i++) systems->tweenSystem(&entities[i]);
@@ -117,7 +99,6 @@ void Game::update(double delta) {
 }
 
 void Game::init() {
-	//const auto path = getResourcePath("images");
     const auto path = "assets/images/";
     entities.reserve(141);
     createBackground(renderer, &entities, path);

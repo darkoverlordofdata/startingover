@@ -1,5 +1,16 @@
-#ifndef COMPONENTS_H
-#define COMPONENTS_H
+#pragma once
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_ttf.h>
+#include <cstdio>
+#include <map>
+#include <string>
+#include <iostream>
+#include <ctime>
+#include <chrono>
+#include <vector>
+#include <random>
 
 #include <experimental/optional>
 
@@ -122,4 +133,4 @@ public:
 
 
 
-#endif
+// #endif

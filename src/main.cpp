@@ -1,18 +1,8 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_mixer.h>
-#include <SDL2/SDL_ttf.h>
-#include <cstdio>
-#include <iostream>
-#include <chrono>
-#include <string>
-#include <map>
+#include "game.h"
 #ifdef __EMSCRIPTEN__
 #include <functional>
 #include <emscripten.h>
 #endif
-#include "components.h"
-#include "game.h"
 /**
  */
 inline void logSDLError(std::ostream &os, const std::string &msg){
@@ -32,7 +22,7 @@ int main(int argc, char** argv){
     std::srand(std::time(0));    
 
     auto title = "Shmupwarz";
-    auto width = 720;
+    auto width = 900;
     auto height = 600;
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER | SDL_INIT_AUDIO)) {

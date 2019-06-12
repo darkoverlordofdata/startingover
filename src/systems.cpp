@@ -1,19 +1,5 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_mixer.h>
-#include <SDL2/SDL_ttf.h>
-#include <cstdio>
-#include <map>
-#include <string>
-#include <iostream>
-#include <ctime>
-#include <chrono>
-#include <vector>
-#include <random>
-#include "components.h"
-#include "entities.h"
-#include "game.h"
 #include "systems.h"
+#include "game.h"
 
 
 Systems::Systems(Game* g): game(g) {

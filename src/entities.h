@@ -1,5 +1,5 @@
-#ifndef ENTITIES_H
-#define ENTITIES_H
+#pragma once
+#include "components.h"
 
 void createBackground(SDL_Renderer* renderer, std::vector<Entity>* entities, std::string path);
 Entity* createPlayer(SDL_Renderer* renderer, std::vector<Entity>* entities, std::string path);
@@ -30,4 +30,3 @@ void refreshExplosion(Entity* entity, int x, int y);
 void refreshBang(Entity* entity, int x, int y);
 void refreshParticle(Entity* entity, int x, int y);
 
-#endif

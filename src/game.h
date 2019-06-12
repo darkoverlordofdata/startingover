@@ -1,8 +1,22 @@
-#ifndef GAME_H
-#define GAME_H
-
+#pragma once
 #include <list>
 #include <vector>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_ttf.h>
+#include <cstdio>
+#include <map>
+#include <string>
+#include <iostream>
+#include <ctime>
+#include <chrono>
+#include <list>
+#include <algorithm>
+#include <random>
+#include "components.h"
+#include "entities.h"
+#include "systems.h"
 
 enum {
     DISPLAY_WIDTH  = 480,
@@ -57,4 +71,3 @@ private:
     Systems* systems;
 };
 
-#endif

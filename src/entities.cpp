@@ -1,23 +1,6 @@
 /** 
  * Entity Factory
  */
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <cstdio>
-#include <map>
-#include <string>
-#include <iostream>
-#include <ctime>
-#include <chrono>
-#include <cmath>
-#if (USE_GRESOURCE)
-#include <glib.h>
-#include <glib-object.h>
-#include <gio/gio.h>
-#endif
-#include "components.h"
-#include "game.h"
-#include "systems.h"
 #include "entities.h"
 
 int uniqueId = 0;
@@ -31,24 +14,8 @@ int uniqueId = 0;
  * @return surface
  */
 SDL_Surface* getResource(std::string name) {
-    #if (USE_GRESOURCE)
-    GError *err;
-    const std::string path = "/darkoverlordofdata/shmupwarz/images/"+name;
-    auto ptr = g_resources_lookup_data(path.c_str(), G_RESOURCE_LOOKUP_FLAGS_NONE, &err);
-    if (ptr == nullptr) {
-        return nullptr;
-    } else {
-        auto size = g_bytes_get_size(ptr);
-        auto data = g_bytes_get_data(ptr, nullptr);
-        auto raw = SDL_RWFromMem((void*)data, size);
-        auto surface = IMG_LoadPNG_RW(raw);
-        g_bytes_unref(ptr);
-        return surface;
-    }
-    #else
     const std::string path = "assets/images/"+name;
     return IMG_Load(path.c_str());
-    #endif
 }
 
 void createBackground(SDL_Renderer* renderer, std::vector<Entity>* entities, std::string path){
