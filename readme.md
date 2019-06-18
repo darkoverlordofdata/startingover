@@ -15,4 +15,12 @@ goals & vision - put the lime in the coconut
     mix of opengl & sdl2 similar to monogame
     run on desktop and emscripten
 
-    
+### step1
+
+    replace vala and zerog with c++17. As much as I like vala, valagame must die. I learned about impelemting a monogame style engine using c/cpp.
+
+    * implement the Breakout game from LearnOpenGL
+    * replace SOIL with SDL_Image
+    * replace classes with my doran-xna.framework style classes
+
+

@@ -1,0 +1,34 @@
+{
+  "name": "glm",
+  "template": "package",
+  "version": "0.0.1",
+  "vala": "0.26",
+  "authors": [
+    "Recep Aslantas <info@recp.me>",
+    "Bruce Davidson <darkoverlordofdata@gmail.com"
+  ],
+  "description": "Optimized OpenGL/Graphics Math (glm) for C",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {},
+  "source": "src",
+  "files": [
+    "src/glm.c",
+    "src/glm.vapi"
+  ],
+  "packages": null,
+  "includes": [
+    ".lib/glm/include"
+  ],
+  "libraries": null,
+  "options": {
+    "VERSION": "0.0.1",
+    "RELEASE_NAME": "glm"
+  },
+  "definitions": [],
+  "symbols": [],
+  "copy": null,
+  "vapidir": null,
+  "console": false,
+  "main": "CMakeLists.txt"
+}

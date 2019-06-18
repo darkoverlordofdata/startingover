@@ -9,6 +9,20 @@ inline void logSDLError(std::ostream &os, const std::string &msg){
 	os << msg << " error: " << SDL_GetError() << std::endl;
 }
 
+void checkSDLError(int line = -1)
+{
+#ifndef NDEBUG
+	const char *error = SDL_GetError();
+	if (*error != '\0')
+	{
+		printf("SDL Error: %s\n", error);
+		if (line != -1)
+			printf(" + line: %i\n", line);
+		SDL_ClearError();
+	}
+#endif
+}
+
 #ifdef __EMSCRIPTEN__
 std::function<void()> loop;
 void main_loop() { loop(); }
@@ -29,7 +43,25 @@ int main(int argc, char** argv){
         logSDLError(std::cout, "Init SDL");
         return 0;
     }
+
+    /* Request opengl 3.3 context.
+     * SDL doesn't have the ability to choose which profile at this time of writing,
+     * but it should default to the core profile */
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+
+    /* Turn on double buffering with a 24bit Z buffer.
+     * You may need to change this to 16 or 32 for your system */
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+
+    SDL_GLContext maincontext; /* Our opengl context handle */
+
     auto window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_SHOWN);
+
+    maincontext = SDL_GL_CreateContext(window);
+    checkSDLError(__LINE__);
+
     auto renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
     TTF_Init();
     if (IMG_Init(IMG_INIT_PNG) != IMG_INIT_PNG) {

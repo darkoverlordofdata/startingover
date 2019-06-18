@@ -1,0 +1,44 @@
+{
+  "name": "glm",
+  "template": "package",
+  "vala": "0.26",
+  "authors": [
+    "Recep Aslantas <info@recp.me>",
+    "Bruce Davidson <darkoverlordofdata@gmail.com"
+  ],
+  "description": "Optimized OpenGL/Graphics Math (glm) for C",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {},
+  "source": "src",
+  "files": [
+    "src/glm.c",
+    "src/glm.vapi"
+  ],
+  "packages": null,
+  "includes": [
+    ".lib/glm/include"
+  ],
+  "libraries": null,
+  "options": {
+    "VERSION": "0.0.1",
+    "RELEASE_NAME": "glm"
+  },
+  "definitions": [],
+  "symbols": [],
+  "copy": null,
+  "vapidir": null,
+  "console": false,
+  "main": "CMakeLists.txt",
+  "homepage": "https://github.com/darkoverlordofdata/doran-glm",
+  "_release": "255d2568a2",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "255d2568a25ae90a5fc1d8dbb6541af3365f80ac"
+  },
+  "_source": "git://github.com/darkoverlordofdata/doran-glm.git",
+  "_target": "*",
+  "_originalSource": "git://github.com/darkoverlordofdata/doran-glm",
+  "_direct": true
+}
