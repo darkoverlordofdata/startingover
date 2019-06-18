@@ -49,11 +49,13 @@ class Game
 {
 public:
     // Game state
-    GameState              State;	
-    GLboolean              Keys[1024];
-    GLuint                 Width, Height;
-    std::vector<GameLevel> Levels;
-    GLuint                 Level;
+    GameState               State;	
+    GLboolean               Keys[1024];
+    GLuint                  Width, Height;
+    std::vector<GameLevel>  Levels;
+    GLuint                  Level;
+    bool                    PostProcEnabled;
+
     // Constructor/Destructor
     Game(GLuint width, GLuint height);
     ~Game();

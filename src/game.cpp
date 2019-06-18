@@ -12,13 +12,16 @@
 #include "game_object.h"
 #include "ball_object.h"
 #include "particle_generator.h"
-#include <cstdio>
+#include "post_processor.h"
+
 
 // Game-related State data
 SpriteRenderer    *Renderer;
 GameObject        *Player;
 BallObject        *Ball;
 ParticleGenerator *Particles;
+PostProcessor     *Effects;
+GLfloat            ShakeTime = 0.0f;
 
 
 Game::Game(GLuint width, GLuint height) 
@@ -33,19 +36,24 @@ Game::~Game()
     delete Player;
     delete Ball;
     delete Particles;
+    delete Effects;
 }
 
 void Game::Init()
 {
-
+    // Check caps
     GLint max_samples;
     glGetIntegerv(GL_MAX_SAMPLES, &max_samples);
-    if (max_samples < 4) 
+    PostProcEnabled = max_samples >= 4;
+    if (PostProcEnabled) 
+        printf("Post processing enabled. GL_MAX_SAMPLES = %d\n", max_samples);
+    else 
         printf("GL_MAX_SAMPLES too low (=%d), post processing disabled\n", max_samples);
 
     // Load shaders
     ResourceManager::LoadShader("shaders/sprite.vs", "shaders/sprite.frag", nullptr, "sprite");
     ResourceManager::LoadShader("shaders/particle.vs", "shaders/particle.frag", nullptr, "particle");
+    ResourceManager::LoadShader("shaders/post_processing.vs", "shaders/post_processing.frag", nullptr, "postprocessing");
     // Configure shaders
     glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(this->Width), static_cast<GLfloat>(this->Height), 0.0f, -1.0f, 1.0f);
     ResourceManager::GetShader("sprite").Use().SetInteger("sprite", 0);
@@ -62,6 +70,10 @@ void Game::Init()
     // Set render-specific controls
     Renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
     Particles = new ParticleGenerator(ResourceManager::GetShader("particle"), ResourceManager::GetTexture("particle"), 500);
+    if (PostProcEnabled)
+    {
+        Effects = new PostProcessor(ResourceManager::GetShader("postprocessing"), this->Width, this->Height);
+    }
     // Load levels
     GameLevel one; one.Load("levels/one.lvl", this->Width, this->Height * 0.5);
     GameLevel two; two.Load("levels/two.lvl", this->Width, this->Height * 0.5);
@@ -77,6 +89,10 @@ void Game::Init()
     Player = new GameObject(playerPos, PLAYER_SIZE, ResourceManager::GetTexture("paddle"));
     glm::vec2 ballPos = playerPos + glm::vec2(PLAYER_SIZE.x / 2 - BALL_RADIUS, -BALL_RADIUS * 2);
     Ball = new BallObject(ballPos, BALL_RADIUS, INITIAL_BALL_VELOCITY, ResourceManager::GetTexture("face"));
+
+    //Effects->Shake = GL_TRUE;
+    //Effects->Confuse = GL_TRUE;
+    //Effects->Chaos = GL_TRUE;
 }
 
 void Game::Update(GLfloat dt)
@@ -87,6 +103,16 @@ void Game::Update(GLfloat dt)
     this->DoCollisions();
     // Update particles
     Particles->Update(dt, *Ball, 2, glm::vec2(Ball->Radius / 2));
+    // Reduce shake time
+    if (PostProcEnabled) 
+    {
+        if (ShakeTime > 0.0f)
+        {
+            ShakeTime -= dt;
+            if (ShakeTime <= 0.0f)
+                Effects->Shake = GL_FALSE;
+        }
+    }
     // Check loss condition
     if (Ball->Position.y >= this->Height) // Did ball reach bottom edge?
     {
@@ -102,7 +128,7 @@ void Game::ProcessInput(GLfloat dt)
     {
         GLfloat velocity = PLAYER_VELOCITY * dt;
         // Move playerboard
-        if (this->Keys[GLFW_KEY_LEFT])
+        if (this->Keys[GLFW_KEY_A])
         {
             if (Player->Position.x >= 0)
             {
@@ -111,7 +137,7 @@ void Game::ProcessInput(GLfloat dt)
                     Ball->Position.x -= velocity;
             }
         }
-        if (this->Keys[GLFW_KEY_RIGHT])
+        if (this->Keys[GLFW_KEY_D])
         {
             if (Player->Position.x <= this->Width - Player->Size.x)
             {
@@ -121,7 +147,7 @@ void Game::ProcessInput(GLfloat dt)
             }
         }
         if (this->Keys[GLFW_KEY_SPACE])
-            Ball->Stuck = false;
+            Ball->Stuck = GL_FALSE;
     }
 }
 
@@ -129,6 +155,11 @@ void Game::Render()
 {
     if (this->State == GAME_ACTIVE)
     {
+        // Begin rendering to postprocessing quad
+        if (PostProcEnabled) 
+        {
+            Effects->BeginRender();
+        }
         // Draw background
         Renderer->DrawSprite(ResourceManager::GetTexture("background"), glm::vec2(0, 0), glm::vec2(this->Width, this->Height), 0.0f);
         // Draw level
@@ -139,6 +170,13 @@ void Game::Render()
         Particles->Draw();
         // Draw ball
         Ball->Draw(*Renderer);
+        // End rendering to postprocessing quad
+        if (PostProcEnabled) 
+        {
+            Effects->EndRender();
+            // Render postprocessing quad
+            Effects->Render(glfwGetTime());
+        }
     }
 }
 
@@ -181,6 +219,15 @@ void Game::DoCollisions()
                 // Destroy block if not solid
                 if (!box.IsSolid)
                     box.Destroyed = GL_TRUE;
+                else
+                {   
+                    if (PostProcEnabled) 
+                    {
+                        // if block is solid, enable shake effect
+                        ShakeTime = 0.05f;
+                        Effects->Shake = GL_TRUE;
+                    }
+                }
                 // Collision resolution
                 Direction dir = std::get<1>(collision);
                 glm::vec2 diff_vector = std::get<2>(collision);
