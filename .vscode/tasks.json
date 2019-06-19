@@ -43,7 +43,16 @@
             "group": {
                 "kind": "build",
                 "isDefault": true
-            }
+
+            },
+            "dependsOn":["prebuild"]
+        },
+        {
+            "label": "prebuild",
+            "type": "shell",
+            "command": "${workspaceFolder}/prebuild",
+            "args": [ "${workspaceFolder}" ],
+            "group": "build"
         }
     ]
 }

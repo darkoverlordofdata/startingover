@@ -10,9 +10,7 @@
   "description": "startingover",
   "license": "MIT",
   "private": true,
-  "dependencies": {
-    "glm": "git://github.com/darkoverlordofdata/doran-glm"
-  },
+  "dependencies": {},
   "source": "src",
   "files": [
     "src/ball_object.cpp",

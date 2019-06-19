@@ -23,8 +23,6 @@ goals & vision - put the lime in the coconut
 
         compiles and runs both desktop and emscripten
 
-        for emcc  cp -r /usr/include/glm ./include/glm 
-
     * replace SOIL with SDL_Image
     * replace classes with my doran-xna.framework style classes
 

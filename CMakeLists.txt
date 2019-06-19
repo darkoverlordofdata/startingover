@@ -18,7 +18,6 @@ include ( CMakeToolsHelpers OPTIONAL )
 #
 #   libraries - sources & packages
 #
-add_subdirectory ( .lib/glm )
 if (EXISTS ${CMAKE_SOURCE_DIR}/data AND NOT DEFINED ZEROG )
     add_subdirectory (data)
     list ( APPEND RESOURCES ${resources_gresource_xml_C_FILE} )
