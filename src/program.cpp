@@ -13,6 +13,10 @@
 #include "game.h"
 #include "resource_manager.h"
 
+#ifdef __EMSCRIPTEN__
+#include <functional>
+#include <emscripten.h>
+#endif
 
 // GLFW function declerations
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
@@ -23,6 +27,11 @@ const GLuint SCREEN_WIDTH = 800;
 const GLuint SCREEN_HEIGHT = 600;
 
 Game Breakout(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+#ifdef __EMSCRIPTEN__
+std::function<void()> loop;
+void main_loop() { loop(); }
+#endif
 
 int main(int argc, char *argv[])
 {
@@ -57,8 +66,14 @@ int main(int argc, char *argv[])
     // Start Game within Menu State
     Breakout.State = GAME_ACTIVE;
 
+#ifdef __EMSCRIPTEN__
+    loop = [&] 
+    {
+#else
     while (!glfwWindowShouldClose(window))
     {
+#endif
+
         // Calculate delta time
         GLfloat currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
@@ -79,6 +94,10 @@ int main(int argc, char *argv[])
 
         glfwSwapBuffers(window);
     }
+#ifdef __EMSCRIPTEN__
+    ;
+    emscripten_set_main_loop(main_loop, 0, true);
+#endif
 
     // Delete all resources as loaded using the resource manager
     ResourceManager::Clear();

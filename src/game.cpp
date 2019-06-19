@@ -44,16 +44,23 @@ void Game::Init()
     // Check caps
     GLint max_samples;
     glGetIntegerv(GL_MAX_SAMPLES, &max_samples);
+    #if (__EMSCRIPTEN__)
+    PostProcEnabled = false;
+    #else
     PostProcEnabled = max_samples >= 4;
     if (PostProcEnabled) 
         printf("Post processing enabled. GL_MAX_SAMPLES = %d\n", max_samples);
     else 
         printf("GL_MAX_SAMPLES too low (=%d), post processing disabled\n", max_samples);
+    #endif
 
     // Load shaders
     ResourceManager::LoadShader("shaders/sprite.vs", "shaders/sprite.frag", nullptr, "sprite");
     ResourceManager::LoadShader("shaders/particle.vs", "shaders/particle.frag", nullptr, "particle");
-    ResourceManager::LoadShader("shaders/post_processing.vs", "shaders/post_processing.frag", nullptr, "postprocessing");
+    if (PostProcEnabled)
+    {
+        ResourceManager::LoadShader("shaders/post_processing.vs", "shaders/post_processing.frag", nullptr, "postprocessing");
+    }
     // Configure shaders
     glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(this->Width), static_cast<GLfloat>(this->Height), 0.0f, -1.0f, 1.0f);
     ResourceManager::GetShader("sprite").Use().SetInteger("sprite", 0);
@@ -128,7 +135,7 @@ void Game::ProcessInput(GLfloat dt)
     {
         GLfloat velocity = PLAYER_VELOCITY * dt;
         // Move playerboard
-        if (this->Keys[GLFW_KEY_A])
+        if (this->Keys[GLFW_KEY_LEFT])
         {
             if (Player->Position.x >= 0)
             {
@@ -137,7 +144,7 @@ void Game::ProcessInput(GLfloat dt)
                     Ball->Position.x -= velocity;
             }
         }
-        if (this->Keys[GLFW_KEY_D])
+        if (this->Keys[GLFW_KEY_RIGHT])
         {
             if (Player->Position.x <= this->Width - Player->Size.x)
             {

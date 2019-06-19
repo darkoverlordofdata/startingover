@@ -20,6 +20,11 @@ goals & vision - put the lime in the coconut
     replace vala and zerog with c++17. As much as I like vala, valagame must die. I learned about impelemting a monogame style engine using c/cpp.
 
     * implement the Breakout game from LearnOpenGL - [Breakout](https://learnopengl.com/In-Practice/2D-Game/Breakout)
+
+        compiles and runs both desktop and emscripten
+
+        for emcc  cp -r /usr/include/glm ./include/glm 
+
     * replace SOIL with SDL_Image
     * replace classes with my doran-xna.framework style classes
 

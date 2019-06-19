@@ -1,4 +1,10 @@
-#version 330 core
+#version 300 es
+#ifdef GL_ES
+precision mediump float;
+#else
+precision highp float;
+#endif
+
 in vec2 TexCoords;
 out vec4 color;
 

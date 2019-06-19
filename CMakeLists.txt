@@ -44,7 +44,6 @@ list ( APPEND C_SOURCES src/texture.cpp )
 #
 set ( INCLUDES "${INCLUDES};./include" )
 set ( INCLUDES "${INCLUDES};/usr/include" )
-set ( INCLUDES "${INCLUDES};/usr/include/libdrm" )
 set ( INCLUDES "${INCLUDES};/usr/include/SOIL" )
 
 
