@@ -148,11 +148,13 @@ void Game::ProcessInput(GLfloat dt)
                 Touch = true;
                 X = event.button.x;
                 Y = event.button.y;
+                printf("mouse(%f,%f)\n", X, Y);
                 break;
             case SDL_FINGERDOWN:
                 Touch = true;
                 X = event.motion.x;
                 Y = event.motion.y;
+                printf("touch(%f,%f)\n", X, Y);
                 break;
             case SDL_FINGERUP:
             case SDL_MOUSEBUTTONUP:
