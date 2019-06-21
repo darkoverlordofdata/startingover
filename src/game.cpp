@@ -148,23 +148,10 @@ void Game::ProcessInput(GLfloat dt)
                 Touch = true;
                 X = event.button.x;
                 Y = event.button.y;
-                printf("mouse(%f,%f)\n", X, Y);
                 break;
-            // case SDL_FINGERDOWN:
-            //     Touch = true;
-            //     // event.tfinger.x'
-            //     X = event.tfinger.x * 800 - 400;
-            //     Y = event.tfinger.y * 600 - 300;
-            //     printf("touch(%f,%f)\n", X, Y);
-            //     break;
-            // case SDL_FINGERUP:
             case SDL_MOUSEBUTTONUP:
                 Touch = false;
                 break;
-            // case SDL_FINGERMOTION:
-            //     X = event.tfinger.x;
-            //     Y = event.tfinger.y;
-            //     break;
         }
     }    
     if (this->Keys[SDLK_ESCAPE]) 
