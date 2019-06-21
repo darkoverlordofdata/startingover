@@ -152,8 +152,9 @@ void Game::ProcessInput(GLfloat dt)
                 break;
             case SDL_FINGERDOWN:
                 Touch = true;
-                X = event.motion.x;
-                Y = event.motion.y;
+                // event.tfinger.x'
+                X = event.tfinger.x;
+                Y = event.tfinger.y;
                 printf("touch(%f,%f)\n", X, Y);
                 break;
             case SDL_FINGERUP:
@@ -161,8 +162,8 @@ void Game::ProcessInput(GLfloat dt)
                 Touch = false;
                 break;
             case SDL_FINGERMOTION:
-                X = event.motion.x;
-                Y = event.motion.y;
+                X = event.tfinger.x;
+                Y = event.tfinger.y;
                 break;
         }
     }    
