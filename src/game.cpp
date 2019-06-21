@@ -174,7 +174,7 @@ void Game::ProcessInput(GLfloat dt)
         {
             Player->Position.x = X - (Player->Size.x/2);
         } else {
-            if (this->Keys[SDLK_LEFT] || (Touch && (X < Player->Position.x)))
+            if (this->Keys[SDLK_LEFT] || (Moving && (X < Player->Position.x)))
             {
                 if (Player->Position.x >= 0)
                 {
@@ -183,7 +183,7 @@ void Game::ProcessInput(GLfloat dt)
                         Ball->Position.x -= velocity;
                 }
             }
-            if (this->Keys[SDLK_RIGHT] || (Touch && (X > Player->Position.x)))
+            if (this->Keys[SDLK_RIGHT] || (Moving && (X > Player->Position.x)))
             {
                 if (Player->Position.x <= this->Width - Player->Size.x)
                 {
@@ -253,6 +253,7 @@ void Game::ResetPlayer()
     // Reset player/ball stats
     Player->Size = PLAYER_SIZE;
     Player->Position = glm::vec2(this->Width / 2 - PLAYER_SIZE.x / 2, this->Height - PLAYER_SIZE.y);
+    Player->Position.x = X- (Player->Size.x/2);
     Ball->Reset(Player->Position + glm::vec2(PLAYER_SIZE.x / 2 - BALL_RADIUS, -(BALL_RADIUS * 2)), INITIAL_BALL_VELOCITY);
 }
 
