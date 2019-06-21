@@ -144,12 +144,18 @@ void Game::ProcessInput(GLfloat dt)
             case SDL_KEYUP:   
                 Keys[ event.key.keysym.sym ] = 0;
                 break;
+            case SDL_MOUSEBUTTONDOWN:
+                Touch = true;
+                X = event.button.x;
+                Y = event.button.y;
+                break;
             case SDL_FINGERDOWN:
                 Touch = true;
                 X = event.motion.x;
                 Y = event.motion.y;
                 break;
             case SDL_FINGERUP:
+            case SDL_MOUSEBUTTONUP:
                 Touch = false;
                 break;
             case SDL_FINGERMOTION:
