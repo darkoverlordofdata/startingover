@@ -59,6 +59,7 @@ public:
     float                   X;
     float                   Y;
     bool                    Touch;
+    bool                    Moving;
     GLuint                  Width, Height;
     std::vector<GameLevel>  Levels;
     GLuint                  Level;

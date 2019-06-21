@@ -150,7 +150,14 @@ void Game::ProcessInput(GLfloat dt)
                 Y = event.button.y;
                 break;
             case SDL_MOUSEBUTTONUP:
+                Moving = false;
                 Touch = false;
+                break;
+            case SDL_MOUSEMOTION:
+                Moving = true;
+                Touch = false;
+                X = event.button.x;
+                Y = event.button.y;
                 break;
         }
     }    
