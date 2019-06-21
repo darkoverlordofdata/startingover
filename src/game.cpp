@@ -163,22 +163,27 @@ void Game::ProcessInput(GLfloat dt)
     {
         GLfloat velocity = PLAYER_VELOCITY * dt;
         // Move playerboard
-        if (this->Keys[SDLK_LEFT] || (Touch && (X < Player->Position.x)))
+        if (Touch)
         {
-            if (Player->Position.x >= 0)
+            Player->Position.x = X;
+        } else {
+            if (this->Keys[SDLK_LEFT] || (Touch && (X < Player->Position.x)))
             {
-                Player->Position.x -= velocity;
-                if (Ball->Stuck)
-                    Ball->Position.x -= velocity;
+                if (Player->Position.x >= 0)
+                {
+                    Player->Position.x -= velocity;
+                    if (Ball->Stuck)
+                        Ball->Position.x -= velocity;
+                }
             }
-        }
-        if (this->Keys[SDLK_RIGHT] || (Touch && (X > Player->Position.x)))
-        {
-            if (Player->Position.x <= this->Width - Player->Size.x)
+            if (this->Keys[SDLK_RIGHT] || (Touch && (X > Player->Position.x)))
             {
-                Player->Position.x += velocity;
-                if (Ball->Stuck)
-                    Ball->Position.x += velocity;
+                if (Player->Position.x <= this->Width - Player->Size.x)
+                {
+                    Player->Position.x += velocity;
+                    if (Ball->Stuck)
+                        Ball->Position.x += velocity;
+                }
             }
         }
         if (this->Keys[SDLK_SPACE] || Touch)
