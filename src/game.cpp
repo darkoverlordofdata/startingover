@@ -144,6 +144,18 @@ void Game::ProcessInput(GLfloat dt)
             case SDL_KEYUP:   
                 Keys[ event.key.keysym.sym ] = 0;
                 break;
+            case SDL_FINGERDOWN:
+                Touch = true;
+                X = event.motion.x;
+                Y = event.motion.y;
+                break;
+            case SDL_FINGERUP:
+                Touch = false;
+                break;
+            case SDL_FINGERMOTION:
+                X = event.motion.x;
+                Y = event.motion.y;
+                break;
         }
     }    
     if (this->Keys[SDLK_ESCAPE]) 
@@ -155,7 +167,7 @@ void Game::ProcessInput(GLfloat dt)
     {
         GLfloat velocity = PLAYER_VELOCITY * dt;
         // Move playerboard
-        if (this->Keys[SDLK_LEFT])
+        if (this->Keys[SDLK_LEFT] || (Touch && X < Player->Position.x))
         {
             if (Player->Position.x >= 0)
             {
@@ -164,7 +176,7 @@ void Game::ProcessInput(GLfloat dt)
                     Ball->Position.x -= velocity;
             }
         }
-        if (this->Keys[SDLK_RIGHT])
+        if (this->Keys[SDLK_RIGHT] || (Touch && X > Player->Position.x))
         {
             if (Player->Position.x <= this->Width - Player->Size.x)
             {
@@ -173,8 +185,9 @@ void Game::ProcessInput(GLfloat dt)
                     Ball->Position.x += velocity;
             }
         }
-        if (this->Keys[SDLK_SPACE])
+        if (this->Keys[SDLK_SPACE] || Touch)
             Ball->Stuck = GL_FALSE;
+
     }
 }
 

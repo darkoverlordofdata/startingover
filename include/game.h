@@ -56,6 +56,9 @@ public:
     GameState               State;	
     std::map<int,int>       Keys;
     // GLboolean               Keys[1024];
+    float                   X;
+    float                   Y;
+    bool                    Touch;
     GLuint                  Width, Height;
     std::vector<GameLevel>  Levels;
     GLuint                  Level;
