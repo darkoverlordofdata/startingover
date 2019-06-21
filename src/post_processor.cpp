@@ -8,8 +8,6 @@
 ******************************************************************/
 #include "post_processor.h"
 
-#include <iostream>
-
 PostProcessor::PostProcessor(Shader shader, GLuint width, GLuint height) 
     : PostProcessingShader(shader), Texture(), Width(width), Height(height), Confuse(GL_FALSE), Chaos(GL_FALSE), Shake(GL_FALSE)
 {

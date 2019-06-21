@@ -6,13 +6,10 @@
 ** Creative Commons, either version 4 of the License, or (at your
 ** option) any later version.
 ******************************************************************/
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+
 #include "resource_manager.h"
-
-#include <iostream>
-#include <sstream>
-#include <fstream>
-
-#include <SOIL.h>
 
 // Instantiate static variables
 std::map<std::string, Texture2D>    ResourceManager::Textures;
@@ -108,10 +105,15 @@ Texture2D ResourceManager::loadTextureFromFile(const GLchar *file, GLboolean alp
     }
     // Load image
     int width, height;
-    unsigned char* image = SOIL_load_image(file, &width, &height, 0, texture.Image_Format == GL_RGBA ? SOIL_LOAD_RGBA : SOIL_LOAD_RGB);
+    
+    SDL_Surface * surface = IMG_Load(file);
+    if (SDL_MUSTLOCK(surface)) 
+        SDL_LockSurface(surface);
     // Now generate texture
-    texture.Generate(width, height, image);
+    texture.Generate(surface->w, surface->h, (unsigned char*)surface->pixels);
+    if (SDL_MUSTLOCK(surface)) 
+        SDL_UnlockSurface(surface);
     // And finally free image data
-    SOIL_free_image_data(image);
+    SDL_FreeSurface(surface);
     return texture;
 }

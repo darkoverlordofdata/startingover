@@ -4,6 +4,7 @@
 
 .vscode/ipch
 include/glm
+startingover
 
 ## Build generated
 build/

@@ -8,9 +8,6 @@
 ******************************************************************/
 #include "game_level.h"
 
-#include <fstream>
-#include <sstream>
-
 
 void GameLevel::Load(const GLchar *file, GLuint levelWidth, GLuint levelHeight)
 {

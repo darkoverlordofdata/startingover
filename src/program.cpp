@@ -8,7 +8,10 @@
 ******************************************************************/
 #define GLEW_STATIC
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <chrono>
+
 
 #include "game.h"
 #include "resource_manager.h"
@@ -16,10 +19,10 @@
 #ifdef __EMSCRIPTEN__
 #include <functional>
 #include <emscripten.h>
+std::function<void()> loop;
+void main_loop() { loop(); }
 #endif
 
-// GLFW function declerations
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
 // The Width of the screen
 const GLuint SCREEN_WIDTH = 800;
@@ -28,33 +31,73 @@ const GLuint SCREEN_HEIGHT = 600;
 
 Game Breakout(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-#ifdef __EMSCRIPTEN__
-std::function<void()> loop;
-void main_loop() { loop(); }
+inline void logSDLError(std::ostream &os, const std::string &msg){
+	os << msg << " error: " << SDL_GetError() << std::endl;
+}
+
+void checkSDLError(int line = -1)
+{
+#ifndef NDEBUG
+	const char *error = SDL_GetError();
+	if (*error != '\0')
+	{
+		printf("SDL Error: %s\n", error);
+		if (line != -1)
+			printf(" + line: %i\n", line);
+		SDL_ClearError();
+	}
 #endif
+}
 
 int main(int argc, char *argv[])
 {
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER | SDL_INIT_AUDIO)) {
+        logSDLError(std::cout, "Init SDL");
+        return 0;
+    }
 
-    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Breakout", nullptr, nullptr);
-    glfwMakeContextCurrent(window);
+    /* Request opengl 3.3 context.
+     * SDL doesn't have the ability to choose which profile at this time of writing,
+     * but it should default to the core profile */
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+#ifdef __EMSCRIPTEN__
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+#else
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+#endif
+
+    /* Turn on double buffering with a 24bit Z buffer.
+     * You may need to change this to 16 or 32 for your system */
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+
+    auto window = SDL_CreateWindow("Breakout", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
+    SDL_GLContext maincontext = SDL_GL_CreateContext(window);
+    checkSDLError(__LINE__);
+
+    #ifdef __EMSCRIPTEN__
+    const auto img_flags = IMG_INIT_PNG;
+    #else
+    const auto img_flags = IMG_INIT_PNG | IMG_INIT_JPG;
+    #endif
+
+    if (IMG_Init(img_flags) != img_flags) {
+        logSDLError(std::cout, "Init image");
+    }
+
 
     glewExperimental = GL_TRUE;
     glewInit();
     glGetError(); // Call it once to catch glewInit() bug, all other errors are now from our application.
-
-    glfwSetKeyCallback(window, key_callback);
 
     // OpenGL configuration
     glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    using namespace std::chrono;
+    std::srand(std::time(0));    
 
     // Initialize game
     Breakout.Init();
@@ -65,22 +108,21 @@ int main(int argc, char *argv[])
 
     // Start Game within Menu State
     Breakout.State = GAME_ACTIVE;
+    auto mark1 = high_resolution_clock::now();
 
 #ifdef __EMSCRIPTEN__
     loop = [&] 
     {
 #else
-    while (!glfwWindowShouldClose(window))
+    while (Breakout.State == GAME_ACTIVE) 
     {
 #endif
 
         // Calculate delta time
-        GLfloat currentFrame = glfwGetTime();
-        deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
-        glfwPollEvents();
+        auto mark2 = high_resolution_clock::now();
+        GLfloat deltaTime = ((double) duration_cast<microseconds>(mark2 - mark1).count()) / 1000000.0;
+        mark1 = mark2;
 
-        //deltaTime = 0.001f;
         // Manage user input
         Breakout.ProcessInput(deltaTime);
 
@@ -92,7 +134,7 @@ int main(int argc, char *argv[])
         glClear(GL_COLOR_BUFFER_BIT);
         Breakout.Render();
 
-        glfwSwapBuffers(window);
+        SDL_GL_SwapWindow(window);
     }
 #ifdef __EMSCRIPTEN__
     ;
@@ -102,20 +144,9 @@ int main(int argc, char *argv[])
     // Delete all resources as loaded using the resource manager
     ResourceManager::Clear();
 
-    glfwTerminate();
+    SDL_DestroyWindow(window);
+	// IMG_Quit();
+    SDL_Quit();
     return 0;
 }
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
-{
-    // When a user presses the escape key, we set the WindowShouldClose property to true, closing the application
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, GL_TRUE);
-    if (key >= 0 && key < 1024)
-    {
-        if (action == GLFW_PRESS)
-            Breakout.Keys[key] = GL_TRUE;
-        else if (action == GLFW_RELEASE)
-            Breakout.Keys[key] = GL_FALSE;
-    }
-}

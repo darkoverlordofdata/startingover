@@ -8,7 +8,6 @@
 ******************************************************************/
 #include "sprite_renderer.h"
 
-
 SpriteRenderer::SpriteRenderer(Shader &shader)
 {
     this->shader = shader;

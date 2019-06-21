@@ -6,14 +6,9 @@
 ** Creative Commons, either version 4 of the License, or (at your
 ** option) any later version.
 ******************************************************************/
+#include <SDL2/SDL.h>
+#include <chrono>
 #include "game.h"
-#include "resource_manager.h"
-#include "sprite_renderer.h"
-#include "game_object.h"
-#include "ball_object.h"
-#include "particle_generator.h"
-#include "post_processor.h"
-
 
 // Game-related State data
 SpriteRenderer    *Renderer;
@@ -68,7 +63,11 @@ void Game::Init()
     ResourceManager::GetShader("particle").Use().SetInteger("sprite", 0);
     ResourceManager::GetShader("particle").SetMatrix4("projection", projection);
     // Load textures
+    #ifdef __EMSCRIPTEN__
+    ResourceManager::LoadTexture("textures/background.png", GL_FALSE, "background");
+    #else
     ResourceManager::LoadTexture("textures/background.jpg", GL_FALSE, "background");
+    #endif
     ResourceManager::LoadTexture("textures/awesomeface.png", GL_TRUE, "face");
     ResourceManager::LoadTexture("textures/block.png", GL_FALSE, "block");
     ResourceManager::LoadTexture("textures/block_solid.png", GL_FALSE, "block_solid");
@@ -82,6 +81,7 @@ void Game::Init()
         Effects = new PostProcessor(ResourceManager::GetShader("postprocessing"), this->Width, this->Height);
     }
     // Load levels
+
     GameLevel one; one.Load("levels/one.lvl", this->Width, this->Height * 0.5);
     GameLevel two; two.Load("levels/two.lvl", this->Width, this->Height * 0.5);
     GameLevel three; three.Load("levels/three.lvl", this->Width, this->Height * 0.5);
@@ -131,11 +131,31 @@ void Game::Update(GLfloat dt)
 
 void Game::ProcessInput(GLfloat dt)
 {
+
+    SDL_Event event;
+    while (SDL_PollEvent(&event) != 0) {
+        switch (event.type) {
+            case SDL_QUIT:    
+                State = GAME_END;
+                return;
+            case SDL_KEYDOWN: 
+                Keys[ event.key.keysym.sym ] = 1;
+                break;
+            case SDL_KEYUP:   
+                Keys[ event.key.keysym.sym ] = 0;
+                break;
+        }
+    }    
+    if (this->Keys[SDLK_ESCAPE]) 
+    {
+        State = GAME_END;
+        return;
+    }
     if (this->State == GAME_ACTIVE)
     {
         GLfloat velocity = PLAYER_VELOCITY * dt;
         // Move playerboard
-        if (this->Keys[GLFW_KEY_LEFT])
+        if (this->Keys[SDLK_LEFT])
         {
             if (Player->Position.x >= 0)
             {
@@ -144,7 +164,7 @@ void Game::ProcessInput(GLfloat dt)
                     Ball->Position.x -= velocity;
             }
         }
-        if (this->Keys[GLFW_KEY_RIGHT])
+        if (this->Keys[SDLK_RIGHT])
         {
             if (Player->Position.x <= this->Width - Player->Size.x)
             {
@@ -153,13 +173,15 @@ void Game::ProcessInput(GLfloat dt)
                     Ball->Position.x += velocity;
             }
         }
-        if (this->Keys[GLFW_KEY_SPACE])
+        if (this->Keys[SDLK_SPACE])
             Ball->Stuck = GL_FALSE;
     }
 }
 
 void Game::Render()
 {
+    using namespace std::chrono;
+
     if (this->State == GAME_ACTIVE)
     {
         // Begin rendering to postprocessing quad
@@ -181,8 +203,14 @@ void Game::Render()
         if (PostProcEnabled) 
         {
             Effects->EndRender();
+            auto now = high_resolution_clock::now();
+            auto duration = now.time_since_epoch();
+            auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+            // auto time = now->duration->nanoseconds/1000000000.0;
+            auto time = millis / 1000000.0;
+
             // Render postprocessing quad
-            Effects->Render(glfwGetTime());
+            Effects->Render(time);
         }
     }
 }

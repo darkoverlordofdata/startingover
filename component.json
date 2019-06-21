@@ -28,8 +28,7 @@
   "packages": [],
   "includes": [
     "./include",
-    "/usr/include",
-    "/usr/include/SOIL"
+    "/usr/include"
   ],
   "libraries": [
     "m",
@@ -37,10 +36,7 @@
     "SDL2_image",
     "SDL2_mixer",
     "SDL2_ttf",
-    "SOIL",
-    "glfw",
     "GLEW",
-    "GLU",
     "GL"
   ],
   "options": {

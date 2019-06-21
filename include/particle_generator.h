@@ -6,8 +6,7 @@
 ** Creative Commons, either version 4 of the License, or (at your
 ** option) any later version.
 ******************************************************************/
-#ifndef PARTICLE_GENERATOR_H
-#define PARTICLE_GENERATOR_H
+#pragma once
 #include <vector>
 
 #include <GL/glew.h>
@@ -56,4 +55,3 @@ private:
     void respawnParticle(Particle &particle, GameObject &object, glm::vec2 offset = glm::vec2(0.0f, 0.0f));
 };
 
-#endif

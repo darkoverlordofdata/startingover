@@ -23,7 +23,7 @@ goals & vision - put the lime in the coconut
 
         compiles and runs both desktop and emscripten
 
-    * replace SOIL with SDL_Image
+    * replace GLFW & SOIL with SDL2 - done!
     * replace classes with my doran-xna.framework style classes
 
 

@@ -6,15 +6,12 @@
 ** Creative Commons, either version 4 of the License, or (at your
 ** option) any later version.
 ******************************************************************/
-#ifndef GAMEOBJECT_H
-#define GAMEOBJECT_H
-
+#pragma once
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
 #include "texture.h"
 #include "sprite_renderer.h"
-
 
 // Container object for holding all state relevant for a single
 // game object entity. Each object in the game likely needs the
@@ -37,4 +34,3 @@ public:
     virtual void Draw(SpriteRenderer &renderer);
 };
 
-#endif

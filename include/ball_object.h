@@ -6,9 +6,7 @@
 ** Creative Commons, either version 4 of the License, or (at your
 ** option) any later version.
 ******************************************************************/
-#ifndef BALLOBJECT_H
-#define BALLOBJECT_H
-
+#pragma once
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
@@ -34,5 +32,3 @@ public:
     // Resets the ball to original state with given position and velocity
     void      Reset(glm::vec2 position, glm::vec2 velocity);
 };
-
-#endif

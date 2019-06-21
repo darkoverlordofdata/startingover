@@ -6,17 +6,16 @@
 ** Creative Commons, either version 4 of the License, or (at your
 ** option) any later version.
 ******************************************************************/
-#ifndef RESOURCE_MANAGER_H
-#define RESOURCE_MANAGER_H
-
+#pragma once
+#include <GL/glew.h>
 #include <map>
 #include <string>
-
-#include <GL/glew.h>
+#include <iostream>
+#include <sstream>
+#include <fstream>
 
 #include "texture.h"
 #include "shader.h"
-
 
 // A static singleton ResourceManager class that hosts several
 // functions to load Textures and Shaders. Each loaded texture
@@ -47,5 +46,3 @@ private:
     // Loads a single texture from file
     static Texture2D loadTextureFromFile(const GLchar *file, GLboolean alpha);
 };
-
-#endif

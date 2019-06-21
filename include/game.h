@@ -6,21 +6,25 @@
 ** Creative Commons, either version 4 of the License, or (at your
 ** option) any later version.
 ******************************************************************/
-#ifndef GAME_H
-#define GAME_H
+#pragma once
 #include <vector>
 #include <tuple>
-
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
 
+#include "resource_manager.h"
+#include "sprite_renderer.h"
+#include "game_object.h"
+#include "ball_object.h"
+#include "particle_generator.h"
+#include "post_processor.h"
 #include "game_level.h"
 
 // Represents the current state of the game
 enum GameState {
     GAME_ACTIVE,
     GAME_MENU,
-    GAME_WIN
+    GAME_WIN,
+    GAME_END
 };
 
 // Represents the four possible (collision) directions
@@ -50,7 +54,8 @@ class Game
 public:
     // Game state
     GameState               State;	
-    GLboolean               Keys[1024];
+    std::map<int,int>       Keys;
+    // GLboolean               Keys[1024];
     GLuint                  Width, Height;
     std::vector<GameLevel>  Levels;
     GLuint                  Level;
@@ -71,4 +76,3 @@ public:
     void ResetPlayer();
 };
 
-#endif

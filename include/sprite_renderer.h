@@ -6,8 +6,7 @@
 ** Creative Commons, either version 4 of the License, or (at your
 ** option) any later version.
 ******************************************************************/
-#ifndef SPRITE_RENDERER_H
-#define SPRITE_RENDERER_H
+#pragma once
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
@@ -33,5 +32,3 @@ private:
     // Initializes and configures the quad's buffer and vertex attributes
     void initRenderData();
 };
-
-#endif

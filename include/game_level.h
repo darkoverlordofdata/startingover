@@ -6,17 +6,16 @@
 ** Creative Commons, either version 4 of the License, or (at your
 ** option) any later version.
 ******************************************************************/
-#ifndef GAMELEVEL_H
-#define GAMELEVEL_H
+#pragma once
 #include <vector>
-
 #include <GL/glew.h>
 #include <glm/glm.hpp>
+#include <fstream>
+#include <sstream>
 
 #include "game_object.h"
 #include "sprite_renderer.h"
 #include "resource_manager.h"
-
 
 /// GameLevel holds all Tiles as part of a Breakout level and 
 /// hosts functionality to Load/render levels from the harddisk.
@@ -38,4 +37,3 @@ private:
     void      init(std::vector<std::vector<GLuint>> tileData, GLuint levelWidth, GLuint levelHeight);
 };
 
-#endif

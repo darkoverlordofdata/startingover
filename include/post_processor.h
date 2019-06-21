@@ -6,16 +6,14 @@
 ** Creative Commons, either version 4 of the License, or (at your
 ** option) any later version.
 ******************************************************************/
-#ifndef POST_PROCESSOR_H
-#define POST_PROCESSOR_H
-
+#pragma once
 #include <GL/glew.h>
 #include <glm/glm.hpp>
+#include <iostream>
 
 #include "texture.h"
 #include "sprite_renderer.h"
 #include "shader.h"
-
 
 // PostProcessor hosts all PostProcessing effects for the Breakout
 // Game. It renders the game on a textured quad after which one can
@@ -48,5 +46,3 @@ private:
     // Initialize quad for rendering postprocessing texture
     void initRenderData();
 };
-
-#endif
