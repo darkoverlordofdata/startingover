@@ -165,7 +165,7 @@ void Game::ProcessInput(GLfloat dt)
         // Move playerboard
         if (Touch)
         {
-            Player->Position.x = X;
+            Player->Position.x = X - (Player->Size.x/2);
         } else {
             if (this->Keys[SDLK_LEFT] || (Touch && (X < Player->Position.x)))
             {
