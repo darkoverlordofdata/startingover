@@ -85,15 +85,13 @@ int main(int argc, char *argv[])
         logSDLError(std::cout, "Init image");
     }
 
-    /** 
-     * 
-     * Repalces MonoGame.OpenGL.GL.LoadEntryPoints():
-     */
     #ifndef __EMSCRIPTEN__
+    // Load OpenGL EntryPoints for desktop
     glewExperimental = GL_TRUE;
     glewInit();
     glGetError(); // Call it once to catch glewInit() bug, all other errors are now from our application.
     #endif
+    
     // OpenGL configuration
     glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     glEnable(GL_CULL_FACE);
@@ -149,7 +147,7 @@ int main(int argc, char *argv[])
     ResourceManager::Clear();
 
     SDL_DestroyWindow(window);
-	// IMG_Quit();
+	IMG_Quit();
     SDL_Quit();
     return 0;
 }
