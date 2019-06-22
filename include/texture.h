@@ -7,7 +7,8 @@
 ** option) any later version.
 ******************************************************************/
 #pragma once
-#include <GL/glew.h>
+#define GL3_PROTOTYPES 1
+#include <GLES3/gl3.h>
 #include <iostream>
 
 // Texture2D is able to store and configure a texture in OpenGL.

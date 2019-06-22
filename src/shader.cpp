@@ -28,13 +28,13 @@ void Shader::Compile(const GLchar* vertexSource, const GLchar* fragmentSource, c
     glCompileShader(sFragment);
     checkCompileErrors(sFragment, "FRAGMENT");
     // If geometry shader source code is given, also compile geometry shader
-    if (geometrySource != nullptr)
-    {
-        gShader = glCreateShader(GL_GEOMETRY_SHADER);
-        glShaderSource(gShader, 1, &geometrySource, NULL);
-        glCompileShader(gShader);
-        checkCompileErrors(gShader, "GEOMETRY");
-    }
+    // if (geometrySource != nullptr)
+    // {
+    //     gShader = glCreateShader(GL_GEOMETRY_SHADER);
+    //     glShaderSource(gShader, 1, &geometrySource, NULL);
+    //     glCompileShader(gShader);
+    //     checkCompileErrors(gShader, "GEOMETRY");
+    // }
     // Shader Program
     this->ID = glCreateProgram();
     glAttachShader(this->ID, sVertex);

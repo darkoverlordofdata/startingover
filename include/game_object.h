@@ -7,7 +7,9 @@
 ** option) any later version.
 ******************************************************************/
 #pragma once
-#include <GL/glew.h>
+#define GL3_PROTOTYPES 1
+#include <GLES3/gl3.h>
+// #include <GL/glew.h>
 #include <glm/glm.hpp>
 
 #include "texture.h"

@@ -9,7 +9,8 @@
 #pragma once
 #include <vector>
 #include <tuple>
-#include <GL/glew.h>
+#define GL3_PROTOTYPES 1
+#include <GLES3/gl3.h>
 
 #include "resource_manager.h"
 #include "sprite_renderer.h"

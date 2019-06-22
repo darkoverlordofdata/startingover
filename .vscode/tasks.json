@@ -31,7 +31,6 @@
                 "--preload-file", "shaders",
                 "--preload-file", "textures"
             ],
-            // "-s", "USE_GLFW=3",
 
             "problemMatcher": {
                 "owner": "emcc",

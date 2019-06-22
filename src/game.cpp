@@ -133,8 +133,10 @@ void Game::ProcessInput(GLfloat dt)
 {
 
     SDL_Event event;
-    while (SDL_PollEvent(&event) != 0) {
-        switch (event.type) {
+    while (SDL_PollEvent(&event) != 0) 
+    {
+        switch (event.type) 
+        {
             case SDL_QUIT:    
                 State = GAME_END;
                 return;

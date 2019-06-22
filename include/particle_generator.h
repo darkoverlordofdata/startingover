@@ -9,7 +9,8 @@
 #pragma once
 #include <vector>
 
-#include <GL/glew.h>
+#define GL3_PROTOTYPES 1
+#include <GLES3/gl3.h>
 #include <glm/glm.hpp>
 
 #include "shader.h"

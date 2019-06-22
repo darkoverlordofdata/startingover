@@ -7,22 +7,22 @@
 ** option) any later version.
 ******************************************************************/
 #define GLEW_STATIC
-#include <GL/glew.h>
+#define GL3_PROTOTYPES 1
+#include <GLES3/gl3.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <chrono>
-
-
-#include "game.h"
-#include "resource_manager.h"
-
 #ifdef __EMSCRIPTEN__
 #include <functional>
 #include <emscripten.h>
 std::function<void()> loop;
 void main_loop() { loop(); }
+#else
+#include <GL/glew.h>
 #endif
 
+#include "game.h"
+#include "resource_manager.h"
 
 // The Width of the screen
 const GLuint SCREEN_WIDTH = 800;
@@ -85,11 +85,15 @@ int main(int argc, char *argv[])
         logSDLError(std::cout, "Init image");
     }
 
-
+    /** 
+     * 
+     * Repalces MonoGame.OpenGL.GL.LoadEntryPoints():
+     */
+    #ifndef __EMSCRIPTEN__
     glewExperimental = GL_TRUE;
     glewInit();
     glGetError(); // Call it once to catch glewInit() bug, all other errors are now from our application.
-
+    #endif
     // OpenGL configuration
     glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     glEnable(GL_CULL_FACE);
