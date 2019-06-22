@@ -6,7 +6,6 @@
 ** Creative Commons, either version 4 of the License, or (at your
 ** option) any later version.
 ******************************************************************/
-#define GLEW_STATIC
 #define GL3_PROTOTYPES 1
 #include <GLES3/gl3.h>
 #include <SDL2/SDL.h>
@@ -18,6 +17,7 @@
 std::function<void()> loop;
 void main_loop() { loop(); }
 #else
+#define GLEW_STATIC
 #include <GL/glew.h>
 #endif
 
