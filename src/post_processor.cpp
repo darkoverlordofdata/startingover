@@ -51,12 +51,12 @@ PostProcessor::PostProcessor(Shader shader, GLuint width, GLuint height)
         {  offset, -offset  }   // bottom-right    
     };
     glUniform2fv(glGetUniformLocation(this->PostProcessingShader.ID, "offsets"), 9, (GLfloat*)offsets);
-    GLint edge_kernel[9] = {
+    GLfloat edge_kernel[9] = {
         -1, -1, -1,
         -1,  8, -1,
         -1, -1, -1
     };
-    glUniform1iv(glGetUniformLocation(this->PostProcessingShader.ID, "edge_kernel"), 9, edge_kernel);
+    glUniform1fv(glGetUniformLocation(this->PostProcessingShader.ID, "edge_kernel"), 9, edge_kernel);
     GLfloat blur_kernel[9] = {
         1.0 / 16, 2.0 / 16, 1.0 / 16,
         2.0 / 16, 4.0 / 16, 2.0 / 16,

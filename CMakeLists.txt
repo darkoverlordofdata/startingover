@@ -43,6 +43,7 @@ list ( APPEND C_SOURCES src/texture.cpp )
 #
 set ( INCLUDES "${INCLUDES};./include" )
 set ( INCLUDES "${INCLUDES};/usr/include" )
+set ( INCLUDES "${INCLUDES};/usr/local/include" )
 
 
 #
@@ -59,13 +60,13 @@ set ( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lGL" )
 
 
 set ( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w -std=c99 -O3" )
+set ( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L/usr/local/lib" )
 set ( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++17 -O3" )
 
 
 # definitions 
 
 include_directories(AFTER ${INCLUDES})
-
 #
 #   compile ccode & link executable
 #

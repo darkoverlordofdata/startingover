@@ -26,4 +26,8 @@ goals & vision - put the lime in the coconut
     * replace GLFW & SOIL with SDL2 - done!
     * replace classes with my doran-xna.framework style classes
 
+### glsl change
+shaders stopped compiling - specifically 'postprocessing.frag'
+* 'samples' is now a reserved word. changed to 'zamples'.
+* int not allowed at line 33. variable 'edge_kernel' changed to float.
 
